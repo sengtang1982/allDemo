@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Íõ²¨
  *
  */
-public class JdbcTest9 {
+public class JdbcTest09 {
 	public static void main(String[] args) throws InterruptedException {
 		for (int i = 0; i < 10; i++) {
 			Thread t = new Thread(new T9_1());

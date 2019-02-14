@@ -11,32 +11,27 @@ import java.sql.SQLException;
  * @author 王波
  *
  */
-public class JdbcTest4 {
+public class JdbcTest07 {
 	public static void main(String[] args) throws InterruptedException {
-		Thread t1 = new Thread(new T4_1());
-		Thread t2 = new Thread(new T4_2());
+		Thread t1 = new Thread(new T7_1());
+		Thread t2 = new Thread(new T7_2());
 		t1.start();
 		Thread.sleep(1000);
 		t2.start();
 	}
 }
 
-class T4_1 implements Runnable {
+class T7_1 implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("线程1启动");
 		try {
 			Connection conn = DbUtils.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "select * from T1 where name1='col1_0' for update";
+			String sql = "update T1 set updateTime=CURRENT_TIME() where id=1";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				int id = rs.getInt(1);
-				String col1 = rs.getString(2);
-				String col2 = rs.getString(3);
-				System.out.println(id + "," + col1 + "," + col2);
-			}
+			int row = stmt.executeUpdate();
+			System.out.println("更新结果" + row);
 			Thread.sleep(10000);
 			conn.commit();
 			conn.close();
@@ -50,14 +45,14 @@ class T4_1 implements Runnable {
 	}
 }
 
-class T4_2 implements Runnable {
+class T7_2 implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("线程2启动");
 		try {
 			Connection conn = DbUtils.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "select * from T1 where name1='col1_0' for update";
+			String sql = "select * from T1 where updateTime is null ";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {

@@ -11,24 +11,24 @@ import java.sql.SQLException;
  * @author 王波
  *
  */
-public class JdbcTest6 {
+public class JdbcTest03 {
 	public static void main(String[] args) throws InterruptedException {
-		Thread t1 = new Thread(new T6_1());
-		Thread t2 = new Thread(new T6_2());
+		Thread t1 = new Thread(new T3_1());
+		Thread t2 = new Thread(new T3_2());
 		t1.start();
 		Thread.sleep(1000);
 		t2.start();
 	}
 }
 
-class T6_1 implements Runnable {
+class T3_1 implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("线程1启动");
 		try {
 			Connection conn = DbUtils.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "select * from T1 where name1='col1_0' for update";
+			String sql = "select * from T1 where id=12 for update";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -50,14 +50,14 @@ class T6_1 implements Runnable {
 	}
 }
 
-class T6_2 implements Runnable {
+class T3_2 implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("线程2启动");
 		try {
 			Connection conn = DbUtils.getConnection();
 			conn.setAutoCommit(false);
-			String sql = "select * from T1 ";
+			String sql = "select * from T1 where id=13 for update";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
